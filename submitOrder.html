@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1 style="color: green;">Order placed successfully</h1>
+    <p>order recieved at <span id="dateDisplay" style="color: red;"> </span> </p>
+
+    <a href="/index.html">Please click here to place another order</a>
+    <br></br>
+
+    <button style="background-color: blue; color:white;" type="button" onclick="showOrders(event)">Show Orders</button>
+    <br></br>
+
+    <ul id="orderList"></ul>
+
+
+    <!-- javascript -->
+    <script>
+        var date = new Date()
+        var receivedDate = date.toLocaleString();
+        document.getElementById('dateDisplay').innerText = receivedDate
+
+        const showOrders = (event) => {
+            event.preventDefault()
+            
+            fetch('http://localhost:3000/getOrders')
+                .then(response => response.json())
+                .then(data => {
+                    const orders = data.orders;
+                    const orderListElement = document.getElementById('orderList');
+                    orders.forEach(order => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${order.name}, ${order.email}`;
+                        orderListElement.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>
+
+</html>

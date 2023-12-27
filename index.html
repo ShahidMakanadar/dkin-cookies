@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Order Form</title>
+  </head>
+  <body>
+    <h1>Order Form</h1> 
+    <form>
+        <input type="text" id="name" placeholder="Your Name" required>
+        <input type="text" id="email" placeholder="Your Email" required>
+        <button type="button" id="orderForm">Place Order</button>
+    </form>
+
+
+
+    <!-- javascript -->
+    <script>
+        const Name = document.getElementById('name')
+        const Email = document.getElementById('email')
+        const orderForm = document.getElementById('orderForm');
+
+        orderForm.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            let name = Name.value;
+            let email = Email.value;
+            fetch('http://localhost:3000/submitOrder', {
+                method: 'POST',
+                body: JSON.stringify({ name, email }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => response.json()) 
+            .then(data => {
+                window.location.href = '/submitOrder.html'
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+  </body>
+</html>
